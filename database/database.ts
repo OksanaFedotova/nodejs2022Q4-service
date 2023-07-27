@@ -1,0 +1,22 @@
+export interface User {
+  id: string; // uuid v4
+  login: string;
+  password: string;
+  version: number; // integer number, increments on update
+  createdAt: number; // timestamp of creation
+  updatedAt: number; // timestamp of last update
+}
+interface Artist {
+  id: string; // uuid v4
+  name: string;
+  grammy: boolean;
+}
+export interface IDatabase {
+  users: User[];
+}
+export class Database {
+  users: User[];
+  constructor() {
+    this.users = [];
+  }
+}
