@@ -6,7 +6,7 @@ export interface User {
   createdAt: number; // timestamp of creation
   updatedAt: number; // timestamp of last update
 }
-interface Artist {
+export interface Artist {
   id: string; // uuid v4
   name: string;
   grammy: boolean;
@@ -26,8 +26,10 @@ export interface IDatabase {
 export class Database {
   users: User[];
   tracks: Track[];
+  artists: Artist[];
   constructor() {
     this.users = [];
     this.tracks = [];
+    this.artists = [];
   }
 }
