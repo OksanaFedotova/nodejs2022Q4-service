@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { database } from 'src/main';
 import { CreateArtistDto } from './dto/artist.dto';
 import { randomUUID } from 'node:crypto';
-import { checkItem } from 'src/utils';
+import { checkItem, setIdToNull } from 'src/utils';
 
 @Injectable()
 export class ArtistService {
@@ -26,9 +26,8 @@ export class ArtistService {
     database.artists = database.artists.filter(
       ({ id: artistId }) => artistId !== id,
     );
-    database.tracks.forEach((track) =>
-      track.artistId === id ? (track.artistId = null) : track.artistId,
-    );
+    setIdToNull(id, database.tracks, 'artistId');
+    setIdToNull(id, database.albums, 'artistId');
   }
   updateArtist(id, dto) {
     const artist = checkItem(id, database.artists);

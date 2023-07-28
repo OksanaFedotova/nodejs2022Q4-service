@@ -18,6 +18,14 @@ export interface Track {
   artistId: string | null; // refers to Artist
   albumId: string | null; // refers to Album
   duration: number; // integer number
+  [key: string]: string | number;
+}
+export interface Album {
+  id: string; // uuid v4
+  name: string;
+  year: number;
+  artistId: string | null; // refers to Artist
+  [key: string]: string | number;
 }
 export interface IDatabase {
   users: User[];
@@ -27,9 +35,11 @@ export class Database {
   users: User[];
   tracks: Track[];
   artists: Artist[];
+  albums: Album[];
   constructor() {
     this.users = [];
     this.tracks = [];
     this.artists = [];
+    this.albums = [];
   }
 }
