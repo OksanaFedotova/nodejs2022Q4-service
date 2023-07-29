@@ -31,15 +31,26 @@ export interface IDatabase {
   users: User[];
   track: Track[];
 }
+export interface FavoritesResponse {
+  artists: Artist[];
+  albums: Album[];
+  tracks: Track[];
+}
 export class Database {
   users: User[];
   tracks: Track[];
   artists: Artist[];
   albums: Album[];
+  favorites: FavoritesResponse;
   constructor() {
     this.users = [];
     this.tracks = [];
     this.artists = [];
     this.albums = [];
+    this.favorites = {
+      artists: [],
+      albums: [],
+      tracks: [],
+    };
   }
 }

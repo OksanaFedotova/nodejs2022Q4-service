@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { database } from 'src/main';
 import { CreateAlbumDto } from 'src/album/dto/album.dto';
-import { checkItem, setIdToNull } from 'src/utils';
+import { checkItem, removeFromFavs, setIdToNull } from 'src/utils';
 
 @Injectable()
 export class AlbumService {
@@ -27,6 +27,7 @@ export class AlbumService {
       ({ id: albumId }) => albumId !== id,
     );
     setIdToNull(id, database.tracks, 'albumId');
+    removeFromFavs(id, 'albums');
   }
   updateAlbum(id: string, dto: CreateAlbumDto) {
     const album = checkItem(id, database.albums);

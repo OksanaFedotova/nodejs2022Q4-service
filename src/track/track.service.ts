@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { database } from 'src/main';
 import { randomUUID } from 'node:crypto';
 import { CreateTrackDto } from './dto/track.dto';
-import { checkItem } from 'src/utils';
+import { checkItem, removeFromFavs } from 'src/utils';
 
 @Injectable()
 export class TrackService {
@@ -26,6 +26,7 @@ export class TrackService {
     database.tracks = database.tracks.filter(
       ({ id: trackId }) => trackId !== id,
     );
+    removeFromFavs(id, 'tracks');
   }
   updateTrack(id, dto) {
     let track = checkItem(id, database.tracks);
