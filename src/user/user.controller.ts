@@ -70,7 +70,7 @@ export class UserController {
   }
 
   @ApiOperation({ summary: 'Deletes user by ID' })
-  @ApiNoContentResponse()
+  @ApiNoContentResponse({ description: 'User was deleted successfully' })
   @ApiResponse({
     status: HttpStatus.BAD_REQUEST,
     description: 'Bad request. userId is invalid (not uuid)',

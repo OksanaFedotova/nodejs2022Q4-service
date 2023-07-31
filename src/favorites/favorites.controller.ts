@@ -5,11 +5,10 @@ import {
   ApiOperation,
   ApiParam,
   ApiCreatedResponse,
-  ApiBody,
   ApiOkResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
-  ApiForbiddenResponse,
+  ApiUnprocessableEntityResponse,
   ApiBadRequestResponse,
 } from '@nestjs/swagger';
 import { FavoritesResponse } from 'database/database';
@@ -42,6 +41,7 @@ export class FavoritesController {
   @ApiParam({ name: 'id', required: true, description: 'uuid v4' })
   @ApiCreatedResponse({ description: 'Added successfully' })
   @ApiBadRequestResponse({ description: 'Item id is invalid' })
+  @ApiUnprocessableEntityResponse({ description: "Item with id doesn't exist" })
   addFavorite(@Param('type') type: string, @Param('id') id: string) {
     return this.favoritesService.addFavorite(id, type);
   }

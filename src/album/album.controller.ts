@@ -19,6 +19,7 @@ import {
   ApiOkResponse,
   ApiBadRequestResponse,
   ApiNotFoundResponse,
+  ApiNoContentResponse,
 } from '@nestjs/swagger';
 import { Album } from 'database/database';
 
@@ -49,12 +50,24 @@ export class AlbumController {
   }
   @Get(':id')
   @ApiOperation({ summary: 'Get single album by id' })
-  @ApiOkResponse({ type: '', description: 'Successful operation' })
+  @ApiOkResponse({ type: Album, description: 'Successful operation' })
+  @ApiBadRequestResponse({
+    description: 'Bad request. Album id is invalid (not uuid)',
+  })
+  @ApiNotFoundResponse({ description: 'Album was not found' })
   @ApiParam({ name: 'id', required: true, description: 'uuid v4' })
   findOne(@Param('id') id: string) {
     const album = this.albumService.findOne(id);
     return album;
   }
+
+  @ApiOperation({ summary: 'Delete album from library' })
+  @ApiNoContentResponse({ description: 'Deleted successfully' })
+  @ApiBadRequestResponse({
+    description: 'Bad request. Album id is invalid (not uuid)',
+  })
+  @ApiNotFoundResponse({ description: 'Album was not found' })
+  @ApiParam({ name: 'id', required: true, description: 'uuid v4' })
   @Delete(':id')
   @HttpCode(204)
   deleteAlbum(@Param('id') id: string) {
