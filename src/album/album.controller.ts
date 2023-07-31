@@ -17,37 +17,39 @@ import {
   ApiCreatedResponse,
   ApiBody,
   ApiOkResponse,
-  ApiNoContentResponse,
-  ApiNotFoundResponse,
-  ApiForbiddenResponse,
   ApiBadRequestResponse,
+  ApiNotFoundResponse,
 } from '@nestjs/swagger';
+import { Album } from 'database/database';
 
 @ApiTags('Album')
 @Controller('album')
 export class AlbumController {
   constructor(private albumService: AlbumService) {}
   @Get()
-  @ApiOperation({ summary: 'Get all albums' })
-  @ApiOkResponse({ type: '', description: '' })
-  @ApiBadRequestResponse({ description: '' })
+  @ApiOperation({ summary: 'Gets all library albums list' })
+  @ApiOkResponse({ type: [Album], description: 'Successful operation' })
+  @ApiBadRequestResponse()
   findAll() {
     return this.albumService.findAll();
   }
   @Post()
-  @ApiOperation({ summary: 'Creates a new user' })
+  @ApiOperation({ summary: 'Add new album information' })
   @ApiBody({
-    description: "The user's login and the user's password",
-    type: '',
+    required: true,
+    description: 'Name, year are required, artist id and album id are optional',
+    type: CreateAlbumDto,
   })
-  @ApiCreatedResponse({ type: '', description: '' })
-  @ApiBadRequestResponse({ description: '' })
+  @ApiCreatedResponse({ type: Album, description: 'Album is create' })
+  @ApiBadRequestResponse({
+    description: 'Bad request. body does not contain required fields',
+  })
   addAlbum(@Body() dto: CreateAlbumDto) {
     return this.albumService.addalbum(dto);
   }
   @Get(':id')
   @ApiOperation({ summary: 'Get single album by id' })
-  @ApiOkResponse({ type: '', description: 'Created Succesfully' })
+  @ApiOkResponse({ type: '', description: 'Successful operation' })
   @ApiParam({ name: 'id', required: true, description: 'uuid v4' })
   findOne(@Param('id') id: string) {
     const album = this.albumService.findOne(id);
@@ -59,6 +61,18 @@ export class AlbumController {
     return this.albumService.deleteAlbum(id);
   }
   @Put(':id')
+  @ApiOperation({ summary: 'Update library album information by UUID' })
+  @ApiBody({
+    required: true,
+    description: 'Name, year are required, artist id and album id are optional',
+    type: CreateAlbumDto,
+  })
+  @ApiOkResponse({ type: Album, description: 'The album has been updated' })
+  @ApiBadRequestResponse({
+    description: 'Bad request. Album Id is invalid (not uuid)',
+  })
+  @ApiNotFoundResponse({ description: 'Album not found' })
+  @ApiParam({ name: 'id', required: true, description: 'uuid v4' })
   updateAlbum(@Param('id') id: string, @Body() dto: CreateAlbumDto) {
     return this.albumService.updateAlbum(id, dto);
   }

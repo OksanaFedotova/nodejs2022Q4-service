@@ -85,10 +85,11 @@ export class UserController {
 
   @ApiOperation({ summary: "Updates a user's password by ID" })
   @ApiBody({
+    required: true,
     description: "The user's old password and the user's new password",
     type: UpdatePasswordDto,
   })
-  @ApiOkResponse()
+  @ApiOkResponse({ type: UserRes, description: 'Success' })
   @ApiResponse({
     status: HttpStatus.BAD_REQUEST,
     description: 'Bad request. userId is invalid (not uuid)',

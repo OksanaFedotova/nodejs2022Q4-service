@@ -38,6 +38,7 @@ export class TrackController {
   @Post()
   @ApiOperation({ summary: 'Add new track information' })
   @ApiBody({
+    required: true,
     description:
       "The track's name and duration are required, album id and artist id are optional",
     type: CreateTrackDto,
@@ -80,6 +81,12 @@ export class TrackController {
   @ApiOkResponse({ type: Track, description: 'The track has been updated' })
   @ApiBadRequestResponse({
     description: 'Bad request. trackId is invalid (not uuid)',
+  })
+  @ApiBody({
+    required: true,
+    description:
+      "The track's name and duration are required, album id and artist id are optional",
+    type: CreateTrackDto,
   })
   @ApiNotFoundResponse({ description: 'Track not found' })
   @ApiParam({ name: 'id', required: true, description: 'uuid v4' })
