@@ -95,9 +95,18 @@ export interface IDatabase {
   users: User[];
   track: Track[];
 }
-export interface FavoritesResponse {
+export class FavoritesResponse {
+  @ApiProperty({
+    type: [Artist],
+  })
   artists: Artist[];
+   @ApiProperty({
+    type: [Album],
+  })
   albums: Album[];
+   @ApiProperty({
+    type: [Track],
+  })
   tracks: Track[];
 }
 export class Database {

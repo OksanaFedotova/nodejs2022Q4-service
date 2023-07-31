@@ -12,6 +12,7 @@ import {
   ApiForbiddenResponse,
   ApiBadRequestResponse,
 } from '@nestjs/swagger';
+import { FavoritesResponse } from 'database/database';
 
 @ApiTags('Favorites')
 @Controller('favs')
@@ -19,34 +20,43 @@ export class FavoritesController {
   constructor(private readonly favoritesService: FavoritesService) {}
 
   @Get()
-  @ApiOperation({ summary: 'Get all favorites' })
-  @ApiOkResponse({ type: '', description: '' })
-  @ApiBadRequestResponse({ description: '' })
+  @ApiOperation({ summary: 'Gets all favorites albums, tracks and artists' })
+  @ApiOkResponse({
+    type: FavoritesResponse,
+    description: 'Successful operation',
+  })
+  @ApiBadRequestResponse()
   findAll() {
     return this.favoritesService.findAll();
   }
 
   @Post(':type/:id')
-  @ApiOperation({ summary: 'Creates a new user' })
-  @ApiBody({
-    description: "The user's login and the user's password",
-    type: '',
+  @ApiOperation({
+    summary: 'Add item (according to the type) to the favorites',
   })
-  @ApiParam({ name: 'type', required: true, description: 'uuid v4' })
-  @ApiParam({ name: 'type', required: true, description: 'uuid v4' })
-  @ApiCreatedResponse({ type: '', description: '' })
-  @ApiBadRequestResponse({ description: '' })
+  @ApiParam({
+    name: 'type',
+    required: true,
+    description: 'string with the value "album", "artist" or "track"',
+  })
+  @ApiParam({ name: 'id', required: true, description: 'uuid v4' })
+  @ApiCreatedResponse({ description: 'Added successfully' })
+  @ApiBadRequestResponse({ description: 'Item id is invalid' })
   addFavorite(@Param('type') type: string, @Param('id') id: string) {
     return this.favoritesService.addFavorite(id, type);
   }
 
   @Delete(':type/:id')
-  @ApiOperation({ summary: 'Deletes user by ID' })
-  @ApiNoContentResponse()
-  @ApiBadRequestResponse()
-  @ApiNotFoundResponse({ description: 'User not found' })
+  @ApiOperation({ summary: 'Delete item by id from favorites' })
+  @ApiNoContentResponse({ description: 'success' })
+  @ApiBadRequestResponse({ description: 'uuid is invalid' })
+  @ApiNotFoundResponse({ description: 'Item was not found' })
   @ApiParam({ name: 'id', required: true, description: 'uuid v4' })
-  @ApiParam({ name: 'type', required: true, description: 'uuid v4' })
+  @ApiParam({
+    name: 'type',
+    required: true,
+    description: 'string with the value "album", "artist" or "track"',
+  })
   @HttpCode(204)
   deleteFavorite(@Param('type') type: string, @Param('id') id: string) {
     return this.favoritesService.deleteFavorite(id, type);
