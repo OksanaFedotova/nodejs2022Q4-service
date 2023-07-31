@@ -33,24 +33,61 @@ export class UserRes {
   })
   updatedAt: number;
 }
-export interface Artist {
+export class Artist {
+  @ApiProperty({
+    type: String,
+  })
   id: string; // uuid v4
+  @ApiProperty({
+    type: String,
+  })
   name: string;
+  @ApiProperty({
+    type: Boolean,
+  })
   grammy: boolean;
 }
 
-export interface Track {
+export class Track {
+  @ApiProperty({
+    type: String,
+  })
   id: string; // uuid v4
+  @ApiProperty({
+    type: String,
+  })
   name: string;
+  @ApiProperty({
+    type: String,
+  })
   artistId: string | null; // refers to Artist
+  @ApiProperty({
+    type: String,
+  })
   albumId: string | null; // refers to Album
+  @ApiProperty({
+    type: Number,
+    description: 'In seconds',
+  })
   duration: number; // integer number
   [key: string]: string | number;
 }
-export interface Album {
+export class Album {
+  @ApiProperty({
+    type: String,
+  })
   id: string; // uuid v4
+  @ApiProperty({
+    type: String,
+  })
   name: string;
+  @ApiProperty({
+    type: Number,
+  })
   year: number;
+  @ApiProperty({
+    type: String,
+  })
   artistId: string | null; // refers to Artist
   [key: string]: string | number;
 }
