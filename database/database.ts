@@ -1,3 +1,5 @@
+import { ApiProperty } from '@nestjs/swagger';
+
 export interface User {
   id: string; // uuid v4
   login: string;
@@ -5,6 +7,31 @@ export interface User {
   version: number; // integer number, increments on update
   createdAt: number; // timestamp of creation
   updatedAt: number; // timestamp of last update
+}
+export class UserRes {
+  @ApiProperty({
+    type: String,
+  })
+  id: string;
+  @ApiProperty({
+    type: String,
+  })
+  login: string;
+  @ApiProperty({
+    type: Number,
+  })
+  version: number;
+  @ApiProperty({
+    type: Number,
+  })
+  @ApiProperty({
+    type: Number,
+  })
+  createdAt: number;
+  @ApiProperty({
+    type: Number,
+  })
+  updatedAt: number;
 }
 export interface Artist {
   id: string; // uuid v4
