@@ -51,7 +51,6 @@ export class ArtistController {
   @Get(':id')
   @ApiOperation({ summary: 'Get single artis by id' })
   @ApiOkResponse({ type: Artist, description: 'Created Succesfully' })
-
   @ApiParam({ name: 'id', required: true, description: 'uuid v4' })
   findOne(@Param('id') id: string) {
     const artist = this.artistService.findOne(id);
