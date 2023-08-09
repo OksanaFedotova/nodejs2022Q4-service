@@ -3,18 +3,25 @@ services:
 
   server:
     container_name: server-container
-    build: .  
+    build: 
+      context: .
+      dockerfile:  ./docker/server/Dockerfile
+      target: development
     restart: always
+    env_file: .env
     environment: 
       PORT: ${PORT}
     ports:
-      - "${PORT}:${PORT}"
+      - ${PORT}:${PORT}
     depends_on:
       - postgres
-    links:
+    links: 
       - postgres:postgres
     networks:
       - postgres
+    volumes:
+      - .:/server
+      - nodemodules:/src/node_modules
 
   postgres:
     container_name: postgres-container
@@ -34,8 +41,8 @@ services:
       - postgres
 
 volumes:
-  pgdata:
-    driver: local
+  pgdata: {}
+  nodemodules: {}
 
 networks:
     postgres:
