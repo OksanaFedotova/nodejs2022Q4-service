@@ -18,10 +18,10 @@ services:
     links: 
       - postgres:postgres
     networks:
-      - postgres
+      - backend
     volumes:
       - .:/server
-      - nodemodules:/src/node_modules
+      - volumedata:/src/node_modules
 
   postgres:
     container_name: postgres-container
@@ -36,14 +36,14 @@ services:
     ports:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
     volumes:
-      - pgdata:/data/postgres
+      - volumedata:/data/postgres
     networks:
-      - postgres
+      - backend
 
 volumes:
-  pgdata: {}
-  nodemodules: {}
+  #pgdata: {}
+  volumedata: {}
 
 networks:
-    postgres:
-      driver: bridge
+  backend:
+    driver: bridge

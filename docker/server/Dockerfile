@@ -2,11 +2,11 @@ FROM node:18-alpine AS development
 
 WORKDIR /server
 
-COPY package*.json ./
+COPY  package*.json ./
 
-COPY . /server
+COPY . .
 
-RUN npm install --legacy-peer-deps && npm cache clean --force
+RUN npm install
 
 EXPOSE 4000 
 
