@@ -3,6 +3,7 @@ import { database } from 'src/main';
 import { randomUUID } from 'node:crypto';
 import { CreateUserDto, UpdatePasswordDto } from './dto';
 import { checkItem } from '../utils';
+//import { User } from '@prisma/client';
 
 @Injectable()
 export class UserService {
