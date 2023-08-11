@@ -1,5 +1,6 @@
 import {
-  BadRequestException,
+  //BadRequestException,
+  HttpException,
   NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
@@ -8,9 +9,14 @@ import { database } from './main';
 interface IObject {
   [key: string]: string | number;
 }
-export const checkItem = (id: string, db, errorType = 404) => {
-  if (!validate(id)) throw new BadRequestException();
-  const item = db.filter(({ id: itemId }) => itemId === id)[0];
+export const checkItem = async (id: string, db, errorType = 404) => {
+  if (!validate(id)) throw new HttpException('User not exist', 404);
+  const item = await db.user.findUnique({
+    where: {
+      id,
+    },
+  });
+  //const item = db.filter(({ id: itemId }) => itemId === id)[0];
   if (!item) {
     switch (errorType) {
       case 404:

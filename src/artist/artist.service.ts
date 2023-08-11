@@ -30,8 +30,8 @@ export class ArtistService {
     setIdToNull(id, database.albums, 'artistId');
     removeFromFavs(id, 'artists');
   }
-  updateArtist(id, dto) {
-    const artist = checkItem(id, database.artists);
+  async updateArtist(id, dto) {
+    const artist = await checkItem(id, database.artists);
     artist.grammy = dto.grammy;
     artist.name = dto.name;
     return artist;

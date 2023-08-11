@@ -29,8 +29,8 @@ export class AlbumService {
     setIdToNull(id, database.tracks, 'albumId');
     removeFromFavs(id, 'albums');
   }
-  updateAlbum(id: string, dto: CreateAlbumDto) {
-    const album = checkItem(id, database.albums);
+  async updateAlbum(id: string, dto: CreateAlbumDto) {
+    const album = await checkItem(id, database.albums);
     album.name = dto.name;
     album.artistId = dto.artistId;
     album.year = dto.year;

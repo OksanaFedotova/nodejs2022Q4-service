@@ -28,8 +28,8 @@ export class TrackService {
     );
     removeFromFavs(id, 'tracks');
   }
-  updateTrack(id, dto) {
-    let track = checkItem(id, database.tracks);
+  async updateTrack(id, dto) {
+    let track = await checkItem(id, database.tracks);
     track = {
       ...track,
       dto,

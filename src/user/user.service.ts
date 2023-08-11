@@ -26,16 +26,21 @@ export class UserService {
     return user;
   }
 
-  findOne(id) {
-    return checkItem(id, database.users);
+  async findOne(id) {
+    return await checkItem(id, this.prisma);
   }
-  deleteUser(id) {
-    checkItem(id, database.users);
-    database.users = database.users.filter(({ id: userId }) => userId !== id);
+  async deleteUser(id) {
+    await checkItem(id, this.prisma);
+    await this.prisma.user.delete({
+      where: {
+        id,
+      },
+    });
+    //database.users = database.users.filter(({ id: userId }) => userId !== id);
   }
-  updatePassword(id, dto: UpdatePasswordDto) {
+  async updatePassword(id, dto: UpdatePasswordDto) {
     const { oldPassword, newPassword } = dto;
-    const user = checkItem(id, database.users);
+    const user = await checkItem(id, this.prisma);
     if (user.password !== oldPassword) {
       throw new ForbiddenException();
     } else {
