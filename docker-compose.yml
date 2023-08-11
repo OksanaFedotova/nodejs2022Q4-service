@@ -41,7 +41,6 @@ services:
       - backend
 
 volumes:
-  #pgdata: {}
   volumedata: {}
 
 networks:

@@ -16,6 +16,8 @@ export class CreateUserDto {
     description: 'This is a required property',
   })
   password: string;
+  static login: string;
+  static password: string;
 }
 export class UpdatePasswordDto {
   @IsNotEmpty()

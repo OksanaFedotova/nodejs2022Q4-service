@@ -1,29 +1,31 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { database } from 'src/main';
-import { randomUUID } from 'node:crypto';
 import { CreateUserDto, UpdatePasswordDto } from './dto';
 import { checkItem } from '../utils';
-//import { User } from '@prisma/client';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class UserService {
-  findAll() {
-    return database.users;
-  }
-  addUser(dto: CreateUserDto) {
-    const uuid = randomUUID();
-    const user = {
-      ...dto,
-      id: uuid,
-      version: database.users.length + 1,
-      createdAt: new Date().getTime(),
-      updatedAt: new Date().getTime(),
-    };
-    database.users.push(user);
-    const res = { ...user };
-    delete res.password;
+  constructor(private prisma: PrismaService) {}
+  async findAll() {
+    const users = await this.prisma.user.findMany({});
+    const res = users.map((user) => {
+      delete user.password;
+      return user;
+    });
     return res;
   }
+  async addUser(dto: CreateUserDto) {
+    const user = await this.prisma.user.create({
+      data: {
+        ...dto,
+        version: 1,
+      },
+    });
+    delete user.password;
+    return user;
+  }
+
   findOne(id) {
     return checkItem(id, database.users);
   }
