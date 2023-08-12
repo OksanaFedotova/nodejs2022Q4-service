@@ -46,7 +46,7 @@ export class AlbumController {
     description: 'Bad request. body does not contain required fields',
   })
   addAlbum(@Body() dto: CreateAlbumDto) {
-    return this.albumService.addalbum(dto);
+    return this.albumService.addAlbum(dto);
   }
   @Get(':id')
   @ApiOperation({ summary: 'Get single album by id' })

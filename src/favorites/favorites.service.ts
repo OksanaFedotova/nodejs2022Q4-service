@@ -9,9 +9,16 @@ export class FavoritesService {
   async findAll() {
     return await this.prisma.favorites.findMany({});
   }
-  addFavorite(id: string, type: string) {
-    const item = checkItem(id, database[`${type}s`], 422);
-    database.favorites[`${type}s`].push(item);
+  async addFavorite(id: string, type: string) {
+    const item = await checkItem(id, this.prisma[`${type}`], 422);
+    this.prisma.favorites.update({
+      where: { id: 1 },
+      data: {
+        [`${type}`]: {
+          push: item,
+        },
+      },
+    });
   }
 
   deleteFavorite(id: string, type: string) {

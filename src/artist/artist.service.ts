@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { database } from 'src/main';
 import { CreateArtistDto } from './dto/artist.dto';
-import { randomUUID } from 'node:crypto';
 import { checkItem, removeFromFavs, setIdToNull } from 'src/utils';
 import { PrismaService } from 'src/prisma/prisma.service';
 
@@ -11,13 +10,12 @@ export class ArtistService {
   async findAll() {
     return await this.prisma.artist.findMany({});
   }
-  addArtist(dto: CreateArtistDto) {
-    const uuid = randomUUID();
-    const artist = {
-      ...dto,
-      id: uuid,
-    };
-    database.artists.push(artist);
+  async addArtist(dto: CreateArtistDto) {
+    const artist = await this.prisma.artist.create({
+      data: {
+        ...dto,
+      },
+    });
     return artist;
   }
   findOne(id) {

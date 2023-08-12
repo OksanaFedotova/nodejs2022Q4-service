@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { randomUUID } from 'crypto';
 import { database } from 'src/main';
 import { CreateAlbumDto } from 'src/album/dto/album.dto';
 import { checkItem, removeFromFavs, setIdToNull } from 'src/utils';
@@ -11,13 +10,12 @@ export class AlbumService {
   async findAll() {
     return await this.prisma.album.findMany({});
   }
-  addalbum(dto: CreateAlbumDto) {
-    const uuid = randomUUID();
-    const album = {
-      ...dto,
-      id: uuid,
-    };
-    database.albums.push(album);
+  async addAlbum(dto: CreateAlbumDto) {
+    const album = await this.prisma.album.create({
+      data: {
+        ...dto,
+      },
+    });
     return album;
   }
   findOne(id) {
