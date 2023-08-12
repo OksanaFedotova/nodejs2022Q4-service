@@ -3,11 +3,13 @@ import { database } from 'src/main';
 import { CreateArtistDto } from './dto/artist.dto';
 import { randomUUID } from 'node:crypto';
 import { checkItem, removeFromFavs, setIdToNull } from 'src/utils';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class ArtistService {
-  findAll() {
-    return database.artists;
+  constructor(private prisma: PrismaService) {}
+  async findAll() {
+    return await this.prisma.artist.findMany({});
   }
   addArtist(dto: CreateArtistDto) {
     const uuid = randomUUID();

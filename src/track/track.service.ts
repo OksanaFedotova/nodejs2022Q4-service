@@ -3,11 +3,13 @@ import { database } from 'src/main';
 import { randomUUID } from 'node:crypto';
 import { CreateTrackDto } from './dto/track.dto';
 import { checkItem, removeFromFavs } from 'src/utils';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class TrackService {
-  findAll() {
-    return database.tracks;
+  constructor(private prisma: PrismaService) {}
+  async findAll() {
+    return await this.prisma.track.findMany({});
   }
   addTrack(dto: CreateTrackDto) {
     const uuid = randomUUID();

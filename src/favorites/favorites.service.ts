@@ -1,11 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { database } from 'src/main';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { checkItem } from 'src/utils';
 
 @Injectable()
 export class FavoritesService {
-  findAll() {
-    return database.favorites;
+  constructor(private prisma: PrismaService) {}
+  async findAll() {
+    return await this.prisma.favorites.findMany({});
   }
   addFavorite(id: string, type: string) {
     const item = checkItem(id, database[`${type}s`], 422);

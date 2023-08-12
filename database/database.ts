@@ -100,11 +100,11 @@ export class FavoritesResponse {
     type: [Artist],
   })
   artists: Artist[];
-   @ApiProperty({
+  @ApiProperty({
     type: [Album],
   })
   albums: Album[];
-   @ApiProperty({
+  @ApiProperty({
     type: [Track],
   })
   tracks: Track[];

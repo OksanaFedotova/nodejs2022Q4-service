@@ -18,7 +18,7 @@ services:
     links: 
       - postgres:postgres
     networks:
-      - backend
+      - postgres
     volumes:
       - .:/server
       - volumedata:/src/node_modules
@@ -38,11 +38,11 @@ services:
     volumes:
       - volumedata:/data/postgres
     networks:
-      - backend
+      - postgres
 
 volumes:
   volumedata: {}
 
 networks:
-  backend:
+  postgres:
     driver: bridge

@@ -1,5 +1,4 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { database } from 'src/main';
 import { CreateUserDto, UpdatePasswordDto } from './dto';
 import { checkItem } from '../utils';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -36,7 +35,6 @@ export class UserService {
         id,
       },
     });
-    //database.users = database.users.filter(({ id: userId }) => userId !== id);
   }
   async updatePassword(id, dto: UpdatePasswordDto) {
     const { oldPassword, newPassword } = dto;
