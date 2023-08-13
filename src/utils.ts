@@ -34,8 +34,8 @@ export const setIdToNull = (id: string, db: IObject[], param: string) => {
   );
 };
 
-// export const removeFromFavs = (id, subdb) => {
-//   database.favorites[subdb] = database.favorites[subdb].filter(
-//     ({ id: itemId }) => itemId !== id,
-//   );
-// };
+export function exclude(res, keys) {
+  return Object.fromEntries(
+    Object.entries(res).filter(([key]) => !keys.includes(key)),
+  );
+}

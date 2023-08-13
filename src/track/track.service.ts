@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTrackDto } from './dto/track.dto';
-import { checkItem } from 'src/utils';
+import { checkItem, exclude } from 'src/utils';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class TrackService {
   constructor(private prisma: PrismaService) {}
   async findAll() {
-    return await this.prisma.track.findMany({});
+    const res = await this.prisma.track.findMany({});
+    return res.map((el) => exclude(el, ['isFavorite']));
   }
   async addTrack(dto: CreateTrackDto) {
     const track = await this.prisma.track.create({

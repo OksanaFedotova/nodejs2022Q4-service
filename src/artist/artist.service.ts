@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { CreateArtistDto } from './dto/artist.dto';
-import { checkItem } from 'src/utils';
+import { checkItem, exclude } from 'src/utils';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class ArtistService {
   constructor(private prisma: PrismaService) {}
   async findAll() {
-    return await this.prisma.artist.findMany({});
+    const res = await this.prisma.artist.findMany({});
+    return res.map((el) => exclude(el, ['isFavorite']));
   }
   async addArtist(dto: CreateArtistDto) {
     const artist = await this.prisma.artist.create({

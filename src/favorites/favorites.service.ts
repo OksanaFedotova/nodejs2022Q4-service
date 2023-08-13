@@ -6,26 +6,56 @@ import { checkItem } from 'src/utils';
 export class FavoritesService {
   constructor(private prisma: PrismaService) {}
   async findAll() {
-    return await this.prisma.favorites.findMany({});
+    // const favs = await Promise.all(
+    //   ['track', 'album', 'artist'].map(async (type) => {
+    //     const dataRaw = await this.prisma[type].findMany({
+    //       where: { isFavorite: true },
+    //     });
+    //     const data = dataRaw.forEach((el) => {
+    //       delete el.isFavorite;
+    //     });
+    //     const res = {
+    //       [type]: data,
+    //     };
+    //     return res;
+    //   }),
+    // );
+    // return favs;
+    const artists = await this.prisma.artist.findMany({
+      where: { isFavorite: true },
+    });
+    const albums = await this.prisma.album.findMany({
+      where: { isFavorite: true },
+    });
+    const tracks = await this.prisma.track.findMany({
+      where: { isFavorite: true },
+    });
+    [artists, albums, tracks].forEach((arr) => {
+      arr.forEach((el) => delete el.isFavorite);
+    });
+    return {
+      artists: artists,
+      albums: albums,
+      tracks: tracks,
+    };
   }
   async addFavorite(id: string, type: string) {
-    const item = await checkItem(id, this.prisma[`${type}`], 422);
-    this.prisma.favorites.update({
-      where: { id: 1 },
+    await checkItem(id, this.prisma[`${type}`], 422);
+    await this.prisma[type].update({
+      where: { id },
       data: {
-        [`${type}`]: {
-          push: item,
+        isFavorite: {
+          set: true,
         },
       },
     });
   }
 
-  //   deleteFavorite(id: string, type: string) {
-  //     checkItem(id, this.prisma[`${type}`][`${type}s`], 422);
-  //     database.favorites[`${type}s`] = database.favorites[`${type}s`].filter(
-  //       ({ id: itemId }) => {
-  //         return itemId !== id;
-  //       },
-  //     );
-  //   }
+  async deleteFavorite(id: string, type: string) {
+    await checkItem(id, this.prisma[`${type}`], 422);
+    return this.prisma[type].update({
+      where: { id },
+      data: { isFavorite: false },
+    });
+  }
 }

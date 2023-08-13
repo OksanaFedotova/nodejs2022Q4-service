@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAlbumDto } from 'src/album/dto/album.dto';
-import { checkItem } from 'src/utils';
+import { checkItem, exclude } from 'src/utils';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class AlbumService {
   constructor(private prisma: PrismaService) {}
   async findAll() {
-    return await this.prisma.album.findMany({});
+    const res = await this.prisma.album.findMany({});
+    return res.map((el) => exclude(el, ['isFavorite']));
   }
   async addAlbum(dto: CreateAlbumDto) {
     const album = await this.prisma.album.create({
