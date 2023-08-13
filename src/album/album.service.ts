@@ -27,14 +27,9 @@ export class AlbumService {
         id,
       },
     });
-    // setIdToNull(id, this.prisma.tracks, 'albumId');
-    // removeFromFavs(id, 'albums');
   }
   async updateAlbum(id: string, dto: CreateAlbumDto) {
-    const album = await checkItem(id, this.prisma.album);
-    album.name = dto.name;
-    album.artistId = dto.artistId;
-    album.year = dto.year;
-    return album;
+    await checkItem(id, this.prisma.album);
+    return await this.prisma.album.update({ where: { id }, data: dto });
   }
 }

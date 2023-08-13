@@ -22,19 +22,14 @@ export class ArtistService {
   }
   async deleteArtist(id) {
     await checkItem(id, this.prisma.artist);
-    this.prisma.artist.delete({
+    await this.prisma.artist.delete({
       where: {
         id,
       },
     });
-    // setIdToNull(id, database.tracks, 'artistId');
-    // setIdToNull(id, database.albums, 'artistId');
-    // removeFromFavs(id, 'artists');
   }
   async updateArtist(id, dto) {
-    const artist = await checkItem(id, this.prisma.artist);
-    artist.grammy = dto.grammy;
-    artist.name = dto.name;
-    return artist;
+    await checkItem(id, this.prisma.artist);
+    return await this.prisma.artist.update({ where: { id }, data: dto });
   }
 }
