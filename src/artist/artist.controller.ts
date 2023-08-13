@@ -21,7 +21,7 @@ import {
   ApiNotFoundResponse,
   ApiBadRequestResponse,
 } from '@nestjs/swagger';
-import { Artist } from 'database/database';
+import { Artist } from 'types/types';
 
 @ApiTags('Artist')
 @Controller('artist')

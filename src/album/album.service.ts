@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { database } from 'src/main';
 import { CreateAlbumDto } from 'src/album/dto/album.dto';
-import { checkItem, removeFromFavs, setIdToNull } from 'src/utils';
+import { checkItem } from 'src/utils';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -19,18 +18,20 @@ export class AlbumService {
     return album;
   }
   findOne(id) {
-    return checkItem(id, database.albums);
+    return checkItem(id, this.prisma.album);
   }
-  deleteAlbum(id) {
-    checkItem(id, database.albums);
-    database.albums = database.albums.filter(
-      ({ id: albumId }) => albumId !== id,
-    );
-    setIdToNull(id, database.tracks, 'albumId');
-    removeFromFavs(id, 'albums');
+  async deleteAlbum(id) {
+    await checkItem(id, this.prisma.album);
+    await this.prisma.album.delete({
+      where: {
+        id,
+      },
+    });
+    // setIdToNull(id, this.prisma.tracks, 'albumId');
+    // removeFromFavs(id, 'albums');
   }
   async updateAlbum(id: string, dto: CreateAlbumDto) {
-    const album = await checkItem(id, database.albums);
+    const album = await checkItem(id, this.prisma.album);
     album.name = dto.name;
     album.artistId = dto.artistId;
     album.year = dto.year;

@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { database } from 'src/main';
 import { CreateTrackDto } from './dto/track.dto';
 import { checkItem } from 'src/utils';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -31,11 +30,7 @@ export class TrackService {
     });
   }
   async updateTrack(id, dto) {
-    let track = await checkItem(id, this.prisma.track);
-    track = {
-      ...track,
-      dto,
-    };
-    return track;
+    await checkItem(id, this.prisma.track);
+    return this.prisma.track.update({ where: { id }, data: dto });
   }
 }

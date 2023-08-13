@@ -11,7 +11,7 @@ import {
   ApiUnprocessableEntityResponse,
   ApiBadRequestResponse,
 } from '@nestjs/swagger';
-import { FavoritesResponse } from 'database/database';
+import { FavoritesResponse } from 'types/types';
 
 @ApiTags('Favorites')
 @Controller('favs')
@@ -46,19 +46,19 @@ export class FavoritesController {
     return this.favoritesService.addFavorite(id, type);
   }
 
-  @Delete(':type/:id')
-  @ApiOperation({ summary: 'Delete item by id from favorites' })
-  @ApiNoContentResponse({ description: 'success' })
-  @ApiBadRequestResponse({ description: 'uuid is invalid' })
-  @ApiNotFoundResponse({ description: 'Item was not found' })
-  @ApiParam({ name: 'id', required: true, description: 'uuid v4' })
-  @ApiParam({
-    name: 'type',
-    required: true,
-    description: 'string with the value "album", "artist" or "track"',
-  })
-  @HttpCode(204)
-  deleteFavorite(@Param('type') type: string, @Param('id') id: string) {
-    return this.favoritesService.deleteFavorite(id, type);
-  }
+  // @Delete(':type/:id')
+  // @ApiOperation({ summary: 'Delete item by id from favorites' })
+  // @ApiNoContentResponse({ description: 'success' })
+  // @ApiBadRequestResponse({ description: 'uuid is invalid' })
+  // @ApiNotFoundResponse({ description: 'Item was not found' })
+  // @ApiParam({ name: 'id', required: true, description: 'uuid v4' })
+  // @ApiParam({
+  //   name: 'type',
+  //   required: true,
+  //   description: 'string with the value "album", "artist" or "track"',
+  // })
+  // @HttpCode(204)
+  // deleteFavorite(@Param('type') type: string, @Param('id') id: string) {
+  //   return this.favoritesService.deleteFavorite(id, type);
+  // }
 }

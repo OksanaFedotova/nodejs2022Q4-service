@@ -21,7 +21,7 @@ import {
   ApiNotFoundResponse,
   ApiBadRequestResponse,
 } from '@nestjs/swagger';
-import { Track } from 'database/database';
+import { Track } from 'types/types';
 
 @ApiTags('Track')
 @Controller('track')

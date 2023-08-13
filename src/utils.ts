@@ -4,7 +4,7 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { validate } from 'uuid';
-import { database } from './main';
+
 interface IObject {
   [key: string]: string | number;
 }
@@ -34,8 +34,8 @@ export const setIdToNull = (id: string, db: IObject[], param: string) => {
   );
 };
 
-export const removeFromFavs = (id, subdb) => {
-  database.favorites[subdb] = database.favorites[subdb].filter(
-    ({ id: itemId }) => itemId !== id,
-  );
-};
+// export const removeFromFavs = (id, subdb) => {
+//   database.favorites[subdb] = database.favorites[subdb].filter(
+//     ({ id: itemId }) => itemId !== id,
+//   );
+// };

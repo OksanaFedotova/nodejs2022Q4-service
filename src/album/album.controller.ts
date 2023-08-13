@@ -21,7 +21,7 @@ import {
   ApiNotFoundResponse,
   ApiNoContentResponse,
 } from '@nestjs/swagger';
-import { Album } from 'database/database';
+import { Album } from 'types/types';
 
 @ApiTags('Album')
 @Controller('album')

@@ -23,7 +23,7 @@ import {
   ApiNotFoundResponse,
   ApiForbiddenResponse,
 } from '@nestjs/swagger';
-import { UserRes } from 'database/database';
+import { UserRes } from 'types/types';
 
 @ApiTags('User')
 @Controller('user')

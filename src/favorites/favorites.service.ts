@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { database } from 'src/main';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { checkItem } from 'src/utils';
 
@@ -21,12 +20,12 @@ export class FavoritesService {
     });
   }
 
-  deleteFavorite(id: string, type: string) {
-    checkItem(id, database[`${type}s`], 422);
-    database.favorites[`${type}s`] = database.favorites[`${type}s`].filter(
-      ({ id: itemId }) => {
-        return itemId !== id;
-      },
-    );
-  }
+  //   deleteFavorite(id: string, type: string) {
+  //     checkItem(id, this.prisma[`${type}`][`${type}s`], 422);
+  //     database.favorites[`${type}s`] = database.favorites[`${type}s`].filter(
+  //       ({ id: itemId }) => {
+  //         return itemId !== id;
+  //       },
+  //     );
+  //   }
 }

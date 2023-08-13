@@ -2,7 +2,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { CreateUserDto, UpdatePasswordDto } from './dto';
 import { checkItem } from '../utils';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { User } from 'database/database';
+import { User } from 'types/types';
 
 @Injectable()
 export class UserService {
