@@ -4,6 +4,8 @@
 
 - Git - [Download & Install Git](https://git-scm.com/downloads).
 - Docker - [Download & Install Docker](https://docs.docker.com/engine/install/).
+- Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
+
 
 ## Downloading
 
@@ -11,8 +13,15 @@
 git clone -b postgres-docker https://github.com/OksanaFedotova/nodejs2023Q2-service.git
 ```
 
+## Installing NPM modules
+
+To run tests:
+```
+npm install
+```
 
 ## Running application
+
 
 ```
 docker compose up
