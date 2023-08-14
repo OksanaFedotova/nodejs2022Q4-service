@@ -19,7 +19,8 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "start:prisma": "npx prisma migrate reset --force && npm run start:dev"
+    "start:prisma": "npx prisma migrate deploy && npm run start:dev",
+    "vulnerabilities": "docker scout cves nodejs2023q2-service-server"
   },
   "dependencies": {
     "@nestjs/common": "^10.1.2",
