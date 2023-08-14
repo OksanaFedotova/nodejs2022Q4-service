@@ -1,28 +1,5 @@
 version: "3.9"
 services:
-
-  server:
-    container_name: server-container
-    build: 
-      context: .
-      dockerfile:  ./docker/server/Dockerfile
-      target: development
-    restart: always
-    env_file: .env
-    environment: 
-      PORT: ${PORT}
-    ports:
-      - ${PORT}:${PORT}
-    depends_on:
-      - postgres
-    links: 
-      - postgres:postgres
-    networks:
-      - postgres
-    volumes:
-      - .:/server
-      - volumedata:/src/node_modules
-
   postgres:
     container_name: postgres-container
     build: ./docker/postgres
@@ -36,9 +13,30 @@ services:
     ports:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
     volumes:
-      - volumedata:/data/postgres
+      - :/data/postgres
     networks:
       - postgres
+
+    server:
+      container_name: server-container
+      build: 
+        context: .
+        dockerfile:  ./docker/server/Dockerfile
+      restart: always
+      env_file: .env
+      environment: 
+        PORT: ${PORT}
+      ports:
+        - ${PORT}:${PORT}
+      depends_on:
+        - postgres
+      links: 
+        - postgres:postgres
+      networks:
+        - postgres
+      volumes:
+        - .:/server
+        - volumedata:/server/node_modules
 
 volumes:
   volumedata: {}
