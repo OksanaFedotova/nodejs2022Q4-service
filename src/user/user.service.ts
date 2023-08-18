@@ -3,6 +3,7 @@ import { CreateUserDto, UpdatePasswordDto } from './dto';
 import { checkItem } from '../utils';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User } from 'types/types';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 @Injectable()
 export class UserService {
@@ -16,19 +17,26 @@ export class UserService {
     return res;
   }
   async addUser(dto: CreateUserDto) {
-    const user = await this.prisma.user.create({
-      data: {
-        ...dto,
-        version: 1,
-      },
-    });
-    const res = {
-      ...user,
-      createdAt: new Date(user.createdAt).getTime(),
-      updatedAt: new Date(user.updatedAt).getTime(),
-    };
-    delete res.password;
-    return res;
+    try {
+      const user = await this.prisma.user.create({
+        data: {
+          ...dto,
+          version: 1,
+        },
+      });
+      const res = {
+        ...user,
+        createdAt: new Date(user.createdAt).getTime(),
+        updatedAt: new Date(user.updatedAt).getTime(),
+      };
+      delete res.password;
+      return res;
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        throw new ForbiddenException(); //уточнить
+      }
+      throw error;
+    }
   }
 
   async findOne(id) {
