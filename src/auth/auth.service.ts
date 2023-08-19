@@ -4,6 +4,7 @@ import * as argon from 'argon2';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UserService } from 'src/user/user.service';
 import { JwtService } from '@nestjs/jwt';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 @Injectable()
 export class AuthService {
@@ -12,9 +13,18 @@ export class AuthService {
     private user: UserService,
     private jwtService: JwtService,
   ) {}
-  async singup({ login, password }: AuthDto) {
+  async singup(dto: AuthDto) {
+    const { login, password } = dto;
     const hash = await argon.hash(password);
-    await this.user.addUser({ login, password: hash });
+    try {
+      const user = await this.user.addUser({ login, password: hash });
+      return user;
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        throw new ForbiddenException();
+      }
+      throw error;
+    }
   }
 
   async login({ login, password }: AuthDto) {

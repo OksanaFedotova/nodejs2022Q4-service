@@ -3,6 +3,9 @@ import {
   NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
+import { readFile } from 'fs/promises';
+import path from 'path';
+import * as yaml from 'js-yaml';
 import { validate } from 'uuid';
 
 interface IObject {
@@ -29,13 +32,11 @@ export const checkItem = async (id: string, db, errorType = 404) => {
 };
 
 export const setIdToNull = (id: string, db: IObject[], param: string) => {
-  db.forEach((item) =>
-    item[param] === id ? (item[param] = null) : item[param],
-  );
+  db.forEach((item) => (item[param] === id ? (item[param] = null) : item[param]));
 };
 
 export function exclude(res, keys) {
-  return Object.fromEntries(
-    Object.entries(res).filter(([key]) => !keys.includes(key)),
-  );
+  return Object.fromEntries(Object.entries(res).filter(([key]) => !keys.includes(key)));
 }
+
+export const getDocs = async (fileName: string) => yaml.load(await readFile(fileName, 'utf8'));

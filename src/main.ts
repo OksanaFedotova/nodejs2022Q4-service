@@ -2,6 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+//import { getDocs } from './utils';
+//,
 
 const PORT: number = Number(process.env.PORT) || 4000;
 async function bootstrap() {
@@ -14,7 +16,9 @@ async function bootstrap() {
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+
+  //const document = await getDocs('./doc/api.yaml');
+  SwaggerModule.setup('doc', app, document);
 
   await app.listen(PORT);
 }

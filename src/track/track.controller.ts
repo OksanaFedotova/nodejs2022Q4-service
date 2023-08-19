@@ -1,13 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  HttpCode,
-  Param,
-  Post,
-  Put,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put } from '@nestjs/common';
 import { TrackService } from './track.service';
 import { CreateTrackDto } from './dto/track.dto';
 import {
@@ -39,8 +30,7 @@ export class TrackController {
   @ApiOperation({ summary: 'Add new track information' })
   @ApiBody({
     required: true,
-    description:
-      "The track's name and duration are required, album id and artist id are optional",
+    description: "The track's name and duration are required, album id and artist id are optional",
     type: CreateTrackDto,
   })
   @ApiCreatedResponse({ type: Track, description: 'Created Succesfully' })
@@ -84,8 +74,7 @@ export class TrackController {
   })
   @ApiBody({
     required: true,
-    description:
-      "The track's name and duration are required, album id and artist id are optional",
+    description: "The track's name and duration are required, album id and artist id are optional",
     type: CreateTrackDto,
   })
   @ApiNotFoundResponse({ description: 'Track not found' })
