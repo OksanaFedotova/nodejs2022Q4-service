@@ -8,6 +8,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
+
   async findAll() {
     const users = await this.prisma.user.findMany({});
     const res = users.map((user) => {
