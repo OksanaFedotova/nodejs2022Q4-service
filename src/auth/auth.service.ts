@@ -38,7 +38,7 @@ export class AuthService {
     if (!pwMatches) throw new ForbiddenException('password is incorrect');
     delete user.password;
     const payload = { sub: user.id, username: user.login };
-    const access_tocken = await this.jwtService.signAsync(payload);
-    return { access_tocken };
+    const accessToken = await this.jwtService.signAsync(payload);
+    return { accessToken };
   }
 }
