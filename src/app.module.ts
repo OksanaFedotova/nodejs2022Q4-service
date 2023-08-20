@@ -8,6 +8,7 @@ import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { LoggerMiddleware } from './logger/logger/logger.middleware';
+import { LoggerModule } from './logger/logger/logger.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { LoggerMiddleware } from './logger/logger/logger.middleware';
       isGlobal: true,
     }),
     PrismaModule,
+    LoggerModule,
   ],
 })
 export class AppModule implements NestModule {
