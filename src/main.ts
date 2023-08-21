@@ -10,10 +10,10 @@ import { HttpAdapterHost } from '@nestjs/core';
 const PORT: number = Number(process.env.PORT) || 4000;
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { logger: false, bufferLogs: true });
-
+  const logger = new CustomLogger();
   app.useLogger(app.get(CustomLogger));
   const adapterHost = app.get(HttpAdapterHost);
-  app.useGlobalFilters(new AllExceptionsFilter(adapterHost));
+  app.useGlobalFilters(new AllExceptionsFilter(adapterHost, logger));
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
@@ -28,5 +28,16 @@ async function bootstrap() {
   SwaggerModule.setup('doc', app, document);
 
   await app.listen(PORT);
+
+  process
+    .on('unhandledRejection', (reason) => {
+      //console.error(reason, 'Unhandled Rejection at Promise', p);
+      logger.error(reason as string, 'Unhandled Rejection at Promise');
+    })
+    .on('uncaughtException', (err) => {
+      //console.error(err, 'Uncaught Exception thrown');
+      logger.error(err.message as string, 'Unhandled Rejection at Promise');
+      process.exit(1);
+    });
 }
 bootstrap();
