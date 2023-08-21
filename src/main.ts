@@ -5,13 +5,14 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { CustomLogger } from './logger/logger.service';
 import { AllExceptionsFilter } from './filters/exeption.filter';
 import { HttpAdapterHost } from '@nestjs/core';
+//import { ConfigService } from '@nestjs/config';
 //import { getDocs } from './utils';
 
 const PORT: number = Number(process.env.PORT) || 4000;
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { logger: false, bufferLogs: true });
-  const logger = new CustomLogger();
-  app.useLogger(app.get(CustomLogger));
+  const logger = app.get(CustomLogger);
+  app.useLogger(logger);
   const adapterHost = app.get(HttpAdapterHost);
   app.useGlobalFilters(new AllExceptionsFilter(adapterHost, logger));
 

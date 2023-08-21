@@ -6,6 +6,7 @@ import {
 import { readFile, stat, unlink } from 'fs/promises';
 import * as yaml from 'js-yaml';
 import { validate } from 'uuid';
+import fs from 'fs';
 
 interface IObject {
   [key: string]: string | number;
@@ -42,5 +43,17 @@ export const getDocs = async (fileName: string) => yaml.load(await readFile(file
 
 export const rotate = async (fileName: string, max: number) => {
   const size = (await stat(fileName)).size;
-  if (size > max) await unlink(fileName);
+  if (size > max) {
+    try {
+      fs.access(fileName, fs.constants.F_OK, async (err) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        await unlink(fileName);
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  }
 };
