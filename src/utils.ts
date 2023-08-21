@@ -3,7 +3,7 @@ import {
   NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
-import { readFile } from 'fs/promises';
+import { readFile, stat, unlink } from 'fs/promises';
 import * as yaml from 'js-yaml';
 import { validate } from 'uuid';
 
@@ -39,3 +39,8 @@ export function exclude(res, keys) {
 }
 
 export const getDocs = async (fileName: string) => yaml.load(await readFile(fileName, 'utf8'));
+
+export const rotate = async (fileName: string) => {
+  const size = (await stat(fileName)).size;
+  if (size > 10000) await unlink(fileName);
+};

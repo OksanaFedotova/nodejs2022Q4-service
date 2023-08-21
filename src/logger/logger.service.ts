@@ -1,6 +1,7 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { LoggerService } from '@nestjs/common';
 import { appendFile } from 'fs/promises';
+import { rotate } from 'src/utils';
 //import { write } from 'src/utils';
 
 @Injectable()
@@ -25,6 +26,7 @@ export class CustomLogger implements LoggerService {
     try {
       process.stdout.write(message);
       await appendFile('logs.log', `${message}\n`);
+      await rotate('logs.log');
     } catch (error) {
       throw new InternalServerErrorException('Something wrong with write logs to file');
     }
@@ -33,6 +35,7 @@ export class CustomLogger implements LoggerService {
     try {
       process.stderr.write(message);
       await appendFile('errors.log', `${message}\n`);
+      await rotate('errors.log');
     } catch (error) {
       throw new InternalServerErrorException('Something wrong with write logs to file');
     }
