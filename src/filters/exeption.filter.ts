@@ -24,5 +24,11 @@ export class AllExceptionsFilter implements ExceptionFilter {
     };
 
     httpAdapter.reply(ctx.getResponse(), responseBody, httpStatus);
+
+    if (exception instanceof Error) {
+      httpStatus >= 500
+        ? this.customLogger.error(exception.message, exception.stack)
+        : this.customLogger.warn(exception.message);
+    }
   }
 }

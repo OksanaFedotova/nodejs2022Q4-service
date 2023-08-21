@@ -1,5 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { LoggerService } from '@nestjs/common';
+import { appendFile } from 'fs/promises';
+//import { write } from 'src/utils';
 
 @Injectable()
 export class CustomLogger implements LoggerService {
@@ -8,20 +10,31 @@ export class CustomLogger implements LoggerService {
   }
 
   error(message: string, trace: string) {
-    this.writeToFile('❌ ' + message);
-    this.writeToFile('🔍 Stack Trace: ' + trace);
+    this.writeErrors('❌ ' + message);
+    this.writeErrors('🔍 Stack Trace: ' + trace);
   }
 
   warn(message: string) {
-    this.writeToFile('⚠️ ' + message);
+    this.writeErrors('⚠️ ' + message);
   }
 
   debug(message: string) {
     this.writeToFile('🐞 ' + message);
   }
-
-  private writeToFile(message: string) {
-    // Implement the logic to write logs to a file here.
-    console.log(message); // For demonstration purposes, we'll just log to the console.
+  private async writeToFile(message: string) {
+    try {
+      process.stdout.write(message);
+      await appendFile('logs.log', `${message}\n`);
+    } catch (error) {
+      throw new InternalServerErrorException('Something wrong with write logs to file');
+    }
+  }
+  private async writeErrors(message: string) {
+    try {
+      process.stderr.write(message);
+      await appendFile('errors.log', `${message}\n`);
+    } catch (error) {
+      throw new InternalServerErrorException('Something wrong with write logs to file');
+    }
   }
 }
