@@ -4,7 +4,6 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { readFile } from 'fs/promises';
-import path from 'path';
 import * as yaml from 'js-yaml';
 import { validate } from 'uuid';
 
