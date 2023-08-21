@@ -33,7 +33,10 @@ export class CustomLogger implements LoggerService {
         process.stdout.write(message);
         await appendFile('logs.log', `${message}\n`);
         const size = (await stat('logs.log')).size;
-        if (size > max) await unlink('logs.log');
+        if (size > max) {
+          await unlink('logs.log');
+          await appendFile('logs.log', `${message}\n`);
+        }
       } catch (error) {
         throw new InternalServerErrorException("File didn't write");
       }
