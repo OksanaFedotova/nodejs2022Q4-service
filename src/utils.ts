@@ -40,7 +40,7 @@ export function exclude(res, keys) {
 
 export const getDocs = async (fileName: string) => yaml.load(await readFile(fileName, 'utf8'));
 
-export const rotate = async (fileName: string) => {
+export const rotate = async (fileName: string, max: number) => {
   const size = (await stat(fileName)).size;
-  if (size > 10000) await unlink(fileName);
+  if (size > max) await unlink(fileName);
 };

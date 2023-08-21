@@ -2,7 +2,9 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { LoggerService } from '@nestjs/common';
 import { appendFile } from 'fs/promises';
 import { rotate } from 'src/utils';
-//import { write } from 'src/utils';
+
+const { MAX_FILE_SIZE } = process.env;
+const max = +MAX_FILE_SIZE;
 
 @Injectable()
 export class CustomLogger implements LoggerService {
@@ -26,18 +28,18 @@ export class CustomLogger implements LoggerService {
     try {
       process.stdout.write(message);
       await appendFile('logs.log', `${message}\n`);
-      await rotate('logs.log');
+      await rotate('logs.log', max);
     } catch (error) {
-      throw new InternalServerErrorException('Something wrong with write logs to file');
+      throw new InternalServerErrorException("File didn't write");
     }
   }
   private async writeErrors(message: string) {
     try {
       process.stderr.write(message);
       await appendFile('errors.log', `${message}\n`);
-      await rotate('errors.log');
+      await rotate('errors.log', max);
     } catch (error) {
-      throw new InternalServerErrorException('Something wrong with write logs to file');
+      throw new InternalServerErrorException("File didn't write");
     }
   }
 }
