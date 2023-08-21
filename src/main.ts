@@ -2,9 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { CustomLogger } from './logger/logger/logger.service';
+import { CustomLogger } from './logger/logger.service';
 //import { getDocs } from './utils';
-//,
 
 const PORT: number = Number(process.env.PORT) || 4000;
 async function bootstrap() {

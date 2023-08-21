@@ -7,8 +7,8 @@ import { FavouritesModule } from './favorites/favorites.module';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
-import { LoggerMiddleware } from './logger/logger/logger.middleware';
-import { LoggerModule } from './logger/logger/logger.module';
+import { LoggerMiddleware } from './logger/logger.middleware';
+import { LoggerModule } from './logger/logger.module';
 
 @Module({
   imports: [
