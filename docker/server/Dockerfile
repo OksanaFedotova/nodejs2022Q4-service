@@ -1,13 +1,13 @@
 FROM node:18-alpine AS server
-
+USER node
 WORKDIR /server
 
-COPY  package*.json ./
+COPY --chown=node:node package*.json ./
 
-COPY . .
+COPY --chown=node:node . .
 
 RUN npm install
 
-EXPOSE 4000 
+EXPOSE 4000
 
 CMD ["npm", "run", "start:prisma"]

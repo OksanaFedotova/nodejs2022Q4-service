@@ -10,7 +10,7 @@ import { HttpAdapterHost } from '@nestjs/core';
 
 const PORT: number = Number(process.env.PORT) || 4000;
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { logger: false, bufferLogs: true });
+  const app = await NestFactory.create(AppModule, { logger: false, bufferLogs: true, cors: true });
   const logger = app.get(CustomLogger);
   app.useLogger(logger);
   const adapterHost = app.get(HttpAdapterHost);

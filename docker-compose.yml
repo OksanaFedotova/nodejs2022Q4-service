@@ -14,33 +14,22 @@ services:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
     volumes:
        - volumedata:/data/postgres
-    networks:
-      - postgres
 
   server:
     container_name: server-container
-    build: 
+    build:
       context: .
       dockerfile:  ./docker/server/Dockerfile
     restart: always
     env_file: .env
-    environment: 
+    environment:
       PORT: ${PORT}
     ports:
       - ${PORT}:${PORT}
     depends_on:
       - postgres
-    links: 
+    links:
       - postgres:postgres
-    networks:
-      - postgres
-    volumes:
-      - .:/server
-      - volumedata:/server/node_modules
 
 volumes:
   volumedata: {}
-
-networks:
-  postgres:
-    driver: bridge
